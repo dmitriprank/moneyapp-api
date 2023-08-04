@@ -21,6 +21,7 @@ USERS = {
                 "type": "expense",
                 "amount": "14.22",
                 "category": "standard_1",
+                "date": "2023-07-31",
                 "timestamp": 104914104104
             },
             {
@@ -28,6 +29,7 @@ USERS = {
                 "type": "deposit",
                 "amount": "14000.00",
                 "category": "salary",
+                "date": "2023-07-31",
                 "timestamp": 1241245151
             }
         ]
