@@ -9,7 +9,7 @@ from sqlalchemy.exc import SQLAlchemyError
 bp = Blueprint("transactions", __name__, description="Operations on transactions")
 
 
-@bp.route("/transactions/<string:transaction_id>")
+@bp.route("/transactions/<int:transaction_id>")
 class Transaction(MethodView):
     @bp.response(200, TransactionSchema)
     def get(self, transaction_id):

@@ -30,7 +30,7 @@ class UserTransactions(MethodView):
         return transaction
 
 
-@bp.route("/users/<string:user_id>")
+@bp.route("/users/<int:user_id>")
 class User(MethodView):
     @bp.response(200, UserSchema)
     def get(self, user_id):
