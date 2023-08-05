@@ -1,11 +1,9 @@
-from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from db import USERS
 from schemas import TransactionSchema, TransactionUpdateSchema
-
-import uuid
-import time
+from models import TransactionModel
+from db import db
+from sqlalchemy.exc import SQLAlchemyError
 
 
 bp = Blueprint("transactions", __name__, description="Operations on transactions")
@@ -15,63 +13,51 @@ bp = Blueprint("transactions", __name__, description="Operations on transactions
 class UserTransactions(MethodView):
     @bp.response(200, TransactionSchema(many=True))
     def get(self, user_id):
-        try:
-            user = USERS[user_id]
-        except KeyError:
-            abort(404, message='User not found.')
-        else:
-            return user['transactions']
+        transactions = TransactionModel.query.filter_by(user_id=user_id)
+        return transactions
 
+
+@bp.route("/transactions")
+class Transactions(MethodView):
     @bp.arguments(TransactionSchema)
     @bp.response(201, TransactionSchema)
-    def post(self, transaction_data, user_id):
-        new_transaction = {**transaction_data,
-                           'id': uuid.uuid4().hex,
-                           'timestamp': int(time.time())}
+    def post(self, transaction_data):
+        transaction = TransactionModel(**transaction_data)
         try:
-            USERS[user_id]['transactions'].append(new_transaction)
-        except KeyError:
-            abort(404, message="User not found")
-        return new_transaction
+            db.session.add(transaction)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="Error occurred while creating transaction")
+        return transaction
 
 
-@bp.route("/users/<int:user_id>/transactions/<string:transaction_id>")
-class Transactions(MethodView):
+@bp.route("/transactions/<string:transaction_id>")
+class Transaction(MethodView):
     @bp.response(200, TransactionSchema)
-    def get(self, user_id, transaction_id):
-        try:
-            user = USERS[user_id]
-        except KeyError:
-            abort(404, message='User not found.')
-        else:
-            for trans in user['transactions']:
-                if trans['id'] == transaction_id:
-                    return trans
-            abort(404, message='Transaction with that id not found.')
+    def get(self, transaction_id):
+        return TransactionModel.query.get_or_404(transaction_id, description="Transaction not found")
 
     @bp.arguments(TransactionUpdateSchema)
     @bp.response(200, TransactionSchema)
-    def put(self, upd_transaction_data, user_id, transaction_id):
+    def put(self, upd_transaction_data, transaction_id):
+        transaction = TransactionModel.query.get(transaction_id)
+        if not transaction:
+            return abort(404, message="Transaction not found")
+
+        transaction.update(**upd_transaction_data)
         try:
-            user = USERS[user_id]
-        except KeyError:
-            abort(404, message="User not found.")
-        else:
-            for idx, trans in enumerate(user['transactions']):
-                if trans['id'] == transaction_id:
-                    user['transactions'][idx].update(upd_transaction_data)
-                    return user['transactions'][idx]
-            abort(404, message='Transaction not found.')
+            db.session.add(transaction)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="Error occurred while updating transaction")
+
+        return transaction
 
     @bp.response(204, example={'success': True})
-    def delete(self, user_id, transaction_id):
-        try:
-            user = USERS[user_id]
-        except KeyError:
-            abort(404, message='User not found.')
-        else:
-            for idx, trans in enumerate(user['transactions']):
-                if trans['id'] == transaction_id:
-                    user['transactions'].pop(idx)
-                    return {'success': True}, 204
-            abort(404, message='Transaction with that id not found.')
+    def delete(self, transaction_id):
+        transaction = TransactionModel.query.get(transaction_id)
+        if not transaction:
+            return abort(404, message="Transaction not found")
+        db.session.delete(transaction)
+        db.session.commit()
+        return {'success': True}

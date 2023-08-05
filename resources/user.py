@@ -1,9 +1,9 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from db import USERS, DEFAULT_USER_DATA
 from schemas import UserSchema
-
-from random import randint
+from models import UserModel
+from db import db
+from sqlalchemy.exc import SQLAlchemyError
 
 
 bp = Blueprint("users", __name__, description="Operations on users")
@@ -13,24 +13,23 @@ bp = Blueprint("users", __name__, description="Operations on users")
 class User(MethodView):
     @bp.response(200, UserSchema)
     def get(self, user_id):
-        try:
-            return USERS[user_id]
-        except KeyError:
-            abort(404, message="User not found")
+        return UserModel.query.get_or_404(user_id, description="User not found")
 
 
 @bp.route("/users")
 class Users(MethodView):
     @bp.response(200, UserSchema(many=True))
     def get(self):
-        return USERS
+        return UserModel.query.all()
 
     @bp.arguments(UserSchema)
     @bp.response(201, UserSchema)
     def post(self, user_data):
-        new_username = user_data.get('username')
-        new_user_data = DEFAULT_USER_DATA.copy()
-        new_user_data['username'] = new_username
-        user_id = randint(1000000, 9999999)
-        USERS[user_id] = new_user_data
-        return USERS[user_id]
+        user = UserModel(**user_data)
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="An error occurred when inserting the user")
+
+        return user

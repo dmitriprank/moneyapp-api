@@ -1,19 +1,27 @@
 from marshmallow import Schema, fields
 
 
-class UserSchema(Schema):
-    user_id = fields.Str(dump_only=True)
-    username = fields.Str()
+class PlainUserSchema(Schema):
+    id = fields.Str(dump_only=True)
     email = fields.Str()
 
 
-class TransactionSchema(Schema):
-    trans_id = fields.Str(dump_only=True)
+class PlainTransactionSchema(Schema):
+    id = fields.Str(dump_only=True)
     type = fields.Str(required=True)
     amount = fields.Str(required=True)
     category = fields.Str(required=True)
     date = fields.Date()
     timestamp = fields.DateTime(dump_only=True)
+
+
+class UserSchema(PlainUserSchema):
+    transactions = fields.Nested(PlainTransactionSchema(), many=True, dump_only=True)
+
+
+class TransactionSchema(PlainTransactionSchema):
+    user_id = fields.Int(required=True)
+    user = fields.Nested(PlainUserSchema(), dump_only=True)
 
 
 class TransactionUpdateSchema(Schema):
