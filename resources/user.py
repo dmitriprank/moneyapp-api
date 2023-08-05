@@ -1,12 +1,31 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from schemas import UserSchema
-from models import UserModel
+from schemas import UserSchema, TransactionSchema, PlainTransactionSchema
+from models import UserModel, TransactionModel
 from db import db
 from sqlalchemy.exc import SQLAlchemyError
 
 
 bp = Blueprint("users", __name__, description="Operations on users")
+
+
+@bp.route("/users/<int:user_id>/transactions")
+class UserTransactions(MethodView):
+    @bp.response(200, TransactionSchema(many=True))
+    def get(self, user_id):
+        transactions = TransactionModel.query.filter_by(user_id=user_id)
+        return transactions
+
+    @bp.arguments(PlainTransactionSchema)
+    @bp.response(201, TransactionSchema)
+    def post(self, transaction_data, user_id):
+        transaction = TransactionModel(**transaction_data, user_id=user_id)
+        try:
+            db.session.add(transaction)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="Error occurred while creating transaction")
+        return transaction
 
 
 @bp.route("/users/<string:user_id>")
