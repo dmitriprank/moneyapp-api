@@ -5,6 +5,7 @@ from models import UserModel, TransactionModel
 from db import db
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from passlib.hash import pbkdf2_sha256
+from flask_jwt_extended import create_access_token
 
 
 bp = Blueprint("users", __name__, description="Operations on users")
@@ -45,7 +46,7 @@ class Users(MethodView):
 
 
 @bp.route("/register")
-class RegisterUser(MethodView):
+class UserRegister(MethodView):
     @bp.arguments(PlainUserSchema)
     @bp.response(201, UserSchema)
     def post(self, user_data):
@@ -62,3 +63,24 @@ class RegisterUser(MethodView):
             abort(500, message="An error occurred when inserting the user")
 
         return user
+
+
+@bp.route("/login")
+class UserLogin(MethodView):
+    @bp.arguments(PlainUserSchema)
+    def post(self, user_data):
+        user = UserModel.query.filter(
+            UserModel.email == user_data["email"]
+        ).first()
+
+        if not user:
+            abort(404, message="User not found")
+
+        if pbkdf2_sha256.verify(user_data["password"], user.password):
+            # TODO: create token
+            access_token = create_access_token(identity=user.id)
+            return {"access_token": access_token}
+
+        abort(401, message="Invalid credentials.")
+
+
