@@ -3,7 +3,8 @@ from flask_smorest import Blueprint, abort
 from schemas import UserSchema, PlainUserSchema, TransactionSchema, PlainTransactionSchema
 from models import UserModel, TransactionModel
 from db import db
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from passlib.hash import pbkdf2_sha256
 
 
 bp = Blueprint("users", __name__, description="Operations on users")
@@ -48,10 +49,15 @@ class RegisterUser(MethodView):
     @bp.arguments(PlainUserSchema)
     @bp.response(201, UserSchema)
     def post(self, user_data):
-        user = UserModel(**user_data)
+        user = UserModel(
+            email=user_data["email"],
+            password=pbkdf2_sha256.hash(user_data["password"])
+        )
         try:
             db.session.add(user)
             db.session.commit()
+        except IntegrityError:
+            abort(409, message="User with such email already exists")
         except SQLAlchemyError:
             abort(500, message="An error occurred when inserting the user")
 
