@@ -6,5 +6,6 @@ class UserModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(128), unique=True, nullable=False)
+    password = db.Column(db.String, nullable=False)
 
     transactions = db.relationship("TransactionModel", back_populates="user", lazy="dynamic")

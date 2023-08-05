@@ -1,6 +1,6 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from schemas import UserSchema, TransactionSchema, PlainTransactionSchema
+from schemas import UserSchema, PlainUserSchema, TransactionSchema, PlainTransactionSchema
 from models import UserModel, TransactionModel
 from db import db
 from sqlalchemy.exc import SQLAlchemyError
@@ -22,6 +22,7 @@ class UserTransactions(MethodView):
         transaction = TransactionModel(**transaction_data, user_id=user_id)
         try:
             db.session.add(transaction)
+
             db.session.commit()
         except SQLAlchemyError:
             abort(500, message="Error occurred while creating transaction")
@@ -41,7 +42,10 @@ class Users(MethodView):
     def get(self):
         return UserModel.query.all()
 
-    @bp.arguments(UserSchema)
+
+@bp.route("/register")
+class RegisterUser(MethodView):
+    @bp.arguments(PlainUserSchema)
     @bp.response(201, UserSchema)
     def post(self, user_data):
         user = UserModel(**user_data)

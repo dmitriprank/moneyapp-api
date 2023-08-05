@@ -3,7 +3,8 @@ from marshmallow import Schema, fields
 
 class PlainUserSchema(Schema):
     id = fields.Str(dump_only=True)
-    email = fields.Str()
+    email = fields.Str(required=True)
+    password = fields.Str(required=True, load_only=True)
 
 
 class PlainTransactionSchema(Schema):

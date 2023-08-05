@@ -13,7 +13,7 @@ class TransactionModel(db.Model):
     date = db.Column(db.Date)
     timestamp = db.Column(db.DateTime, server_default=func.now())
 
-    user = db.relationship("UserModel", back_populates="transactions")
+    user = db.relationship("UserModel", back_populates="transactions", lazy="dynamic")
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
