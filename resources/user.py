@@ -1,11 +1,14 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from schemas import UserSchema, PlainUserSchema, TransactionSchema, PlainTransactionSchema
-from models import UserModel, TransactionModel
-from db import db
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from passlib.hash import pbkdf2_sha256
-from flask_jwt_extended import create_access_token
+
+
+from db import db
+from blocklist import BLOCKLIST
+from models import UserModel, TransactionModel
+from schemas import UserSchema, PlainUserSchema, TransactionSchema, PlainTransactionSchema
 
 
 bp = Blueprint("users", __name__, description="Operations on users")
@@ -13,11 +16,13 @@ bp = Blueprint("users", __name__, description="Operations on users")
 
 @bp.route("/users/<int:user_id>/transactions")
 class UserTransactions(MethodView):
+    @jwt_required()
     @bp.response(200, TransactionSchema(many=True))
     def get(self, user_id):
         transactions = TransactionModel.query.filter_by(user_id=user_id)
         return transactions
 
+    @jwt_required()
     @bp.arguments(PlainTransactionSchema)
     @bp.response(201, TransactionSchema)
     def post(self, transaction_data, user_id):
@@ -33,8 +38,11 @@ class UserTransactions(MethodView):
 
 @bp.route("/users/<int:user_id>")
 class User(MethodView):
+    @jwt_required()
     @bp.response(200, UserSchema)
     def get(self, user_id):
+        user_id = get_jwt_identity()
+        print(user_id)
         return UserModel.query.get_or_404(user_id, description="User not found")
 
 
@@ -77,10 +85,16 @@ class UserLogin(MethodView):
             abort(404, message="User not found")
 
         if pbkdf2_sha256.verify(user_data["password"], user.password):
-            # TODO: create token
             access_token = create_access_token(identity=user.id)
             return {"access_token": access_token}
 
         abort(401, message="Invalid credentials.")
 
 
+@bp.route("/logout")
+class UserLogout(MethodView):
+    @jwt_required()
+    def post(self):
+        jti = get_jwt()["jti"]
+        BLOCKLIST.add(jti)
+        return {"message": "Successfully logged out."}
