@@ -1,5 +1,5 @@
 flask
-flask-smorest
+flask-smorest==0.42.0
 python-dotenv
 sqlalchemy
 flask-sqlalchemy
