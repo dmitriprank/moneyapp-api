@@ -73,7 +73,7 @@ class UserRegister(MethodView):
         return user
 
 
-@bp.route("/login")
+@bp.route("/signin")
 class UserLogin(MethodView):
     @bp.arguments(PlainUserSchema)
     def post(self, user_data):
