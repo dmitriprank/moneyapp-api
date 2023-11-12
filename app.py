@@ -27,7 +27,7 @@ def create_app(db_url=None):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
-    api = Api(app)
+    api = Api(app, config_prefix='/moneyapp-api')
 
     app.config["JWT_SECRET_KEY"] = "AJA$JP@i7btg9szQK?&m8nznJde5N$X8ykxc64cr"
     jwt = JWTManager(app)
