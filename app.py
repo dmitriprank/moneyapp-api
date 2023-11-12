@@ -25,9 +25,10 @@ def create_app(db_url=None):
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["URL_PREFIX"] = '/moneyapp-api'
     db.init_app(app)
 
-    api = Api(app, config_prefix='/moneyapp-api')
+    api = Api(app)
 
     app.config["JWT_SECRET_KEY"] = "AJA$JP@i7btg9szQK?&m8nznJde5N$X8ykxc64cr"
     jwt = JWTManager(app)
