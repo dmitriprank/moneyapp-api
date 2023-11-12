@@ -80,7 +80,7 @@ def create_app(db_url=None):
     with app.app_context():
         db.create_all()
 
-    api.register_blueprint(UserBlueprint, url_prefix='/moneyapp-api')
-    api.register_blueprint(TransactionBlueprint, url_prefix='/moneyapp-api')
+    api.register_blueprint(UserBlueprint)
+    api.register_blueprint(TransactionBlueprint)
 
     return app
