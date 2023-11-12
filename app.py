@@ -16,8 +16,6 @@ from blocklist import BLOCKLIST
 def create_app(db_url=None):
     app = Flask(__name__)
 
-    app.config["SERVER_NAME"] = '164.90.129.107'
-    app.config["APPLICATION_ROOT"] = '/moneyapp-api'
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Moneyapp REST API"
     app.config["API_VERSION"] = "v1"
