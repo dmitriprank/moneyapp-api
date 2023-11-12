@@ -77,6 +77,7 @@ class UserRegister(MethodView):
 class UserLogin(MethodView):
     @bp.arguments(PlainUserSchema)
     def post(self, user_data):
+        print(user_data, type(user_data))
         user = UserModel.query.filter(
             UserModel.email == user_data["email"]
         ).first()
