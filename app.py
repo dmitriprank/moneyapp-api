@@ -3,6 +3,7 @@ import os
 from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from db import db
 import models
@@ -15,6 +16,7 @@ from blocklist import BLOCKLIST
 
 def create_app(db_url=None):
     app = Flask(__name__)
+    CORS(app)
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Moneyapp REST API"
