@@ -39,7 +39,7 @@ class UserTransactions(MethodView):
 @bp.route("/me")
 class User(MethodView):
     @jwt_required()
-    @bp.response(200, UserSchema)
+    @bp.response(200, PlainUserSchema)
     def get(self):
         user_id = get_jwt_identity()
         print(user_id)
