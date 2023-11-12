@@ -1,15 +1,38 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import SQLAlchemyError
 
 
 from db import db
 from models import TransactionModel
-from schemas import TransactionSchema, TransactionUpdateSchema
-
+from schemas import TransactionSchema, TransactionUpdateSchema, PlainTransactionSchema
 
 bp = Blueprint("transactions", __name__, description="Operations on transactions")
+
+
+@bp.route("/transactions")
+class UserTransactions(MethodView):
+    @jwt_required()
+    @bp.response(200, TransactionSchema(many=True))
+    def get(self):
+        user_id = get_jwt_identity()
+        transactions = TransactionModel.query.filter_by(user_id=user_id)
+        return transactions
+
+    @jwt_required()
+    @bp.arguments(PlainTransactionSchema)
+    @bp.response(201, TransactionSchema)
+    def post(self, transaction_data):
+        user_id = get_jwt_identity()
+        transaction = TransactionModel(**transaction_data, user_id=user_id)
+        try:
+            db.session.add(transaction)
+
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="Error occurred while creating transaction")
+        return transaction
 
 
 @bp.route("/transactions/<int:transaction_id>")
