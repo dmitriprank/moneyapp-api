@@ -36,11 +36,11 @@ class UserTransactions(MethodView):
         return transaction
 
 
-@bp.route("/users/<int:user_id>")
+@bp.route("/me")
 class User(MethodView):
     @jwt_required()
     @bp.response(200, UserSchema)
-    def get(self, user_id):
+    def get(self):
         user_id = get_jwt_identity()
         print(user_id)
         return UserModel.query.get_or_404(user_id, description="User not found")
