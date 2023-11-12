@@ -14,7 +14,7 @@ from blocklist import BLOCKLIST
 
 
 def create_app(db_url=None):
-    app = Flask(__name__)
+    app = Flask(__name__, url_prefix='/moneyapp-api')
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Moneyapp REST API"
