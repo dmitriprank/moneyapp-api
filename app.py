@@ -14,8 +14,10 @@ from blocklist import BLOCKLIST
 
 
 def create_app(db_url=None):
-    app = Flask(__name__, url_prefix='/moneyapp-api')
+    app = Flask(__name__)
 
+    app.config["SERVER_NAME"] = 'localhost'
+    app.config["APPLICATION_ROOT"] = '/moneyapp-api'
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Moneyapp REST API"
     app.config["API_VERSION"] = "v1"
@@ -25,7 +27,6 @@ def create_app(db_url=None):
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["APPLICATION_ROOT"] = '/moneyapp-api'
     db.init_app(app)
 
     api = Api(app)
