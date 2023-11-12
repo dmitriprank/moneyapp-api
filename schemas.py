@@ -9,7 +9,7 @@ class PlainUserSchema(Schema):
 
 class PlainTransactionSchema(Schema):
     id = fields.Int(dump_only=True)
-    type = fields.Str(required=True)
+    type = fields.Str(required=True)  # TODO: make schema for transaction type
     amount = fields.Str(required=True)
     category = fields.Str(required=True)
     date = fields.Date()
@@ -22,7 +22,6 @@ class UserSchema(PlainUserSchema):
 
 class TransactionSchema(PlainTransactionSchema):
     user_id = fields.Int(required=True)
-    user = fields.Nested(PlainUserSchema(), dump_only=True)
 
 
 class TransactionUpdateSchema(Schema):

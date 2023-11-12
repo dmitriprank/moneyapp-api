@@ -2,6 +2,7 @@ from db import db
 from sqlalchemy import func
 
 
+# TODO: add note field for transaction
 class TransactionModel(db.Model):
     __tablename__ = "transaction"
 
