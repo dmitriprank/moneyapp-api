@@ -45,3 +45,7 @@ class PlainUserCategorySchema(Schema):
 
 class UserCategorySchema(PlainUserCategorySchema):
     user_id = fields.Int(required=True)
+
+
+class TransactionQuerySchema(Schema):
+    test = fields.Str()

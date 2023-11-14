@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from models import TransactionModel
-from schemas import TransactionSchema, TransactionUpdateSchema, PlainTransactionSchema
+from schemas import TransactionSchema, TransactionUpdateSchema, PlainTransactionSchema, TransactionQuerySchema
 
 bp = Blueprint("transactions", __name__, description="Operations on transactions")
 
@@ -14,7 +14,7 @@ bp = Blueprint("transactions", __name__, description="Operations on transactions
 @bp.route("/transactions")
 class UserTransactions(MethodView):
     @jwt_required()
-    @bp.arguments(location='query', as_kwargs=True)
+    @bp.arguments(TransactionQuerySchema, location='query', as_kwargs=True)
     @bp.response(200, TransactionSchema(many=True))
     def get(self, **kwargs):
         print(kwargs)
