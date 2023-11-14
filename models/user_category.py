@@ -1,8 +1,6 @@
 from db import db
 from sqlalchemy.event import listens_for
 from .user import UserModel
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 
 
 class UserCategoryModel(db.Model):
