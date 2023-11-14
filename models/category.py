@@ -11,7 +11,7 @@ class CategoryModel(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),  nullable=False)
 
     user = db.relationship("UserModel", back_populates="categories", lazy=True)
-s
+
 
 @listens_for(UserModel, 'after_insert')
 def create_default_categories(mapper, connection, user):
