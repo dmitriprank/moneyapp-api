@@ -30,7 +30,10 @@ class TransactionUpdateSchema(Schema):
     date = fields.Date()
 
 
-class UserCategorySchema(Schema):
+class PlainUserCategorySchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str(required=True)
+
+
+class UserCategorySchema(PlainUserCategorySchema):
     user_id = fields.Int(required=True)
