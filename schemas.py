@@ -1,4 +1,10 @@
 from marshmallow import Schema, fields
+from enum import Enum
+
+
+class TransactionType(Enum):
+    DEPOSIT = 'deposit'
+    EXPENSE = 'expense'
 
 
 class PlainUserSchema(Schema):
@@ -9,9 +15,9 @@ class PlainUserSchema(Schema):
 
 class PlainTransactionSchema(Schema):
     id = fields.Int(dump_only=True)
-    type = fields.Str(required=True)  # TODO: make schema for transaction type
+    type = fields.Enum(TransactionType, required=True)  # TODO: make schema for transaction type
     amount = fields.Str(required=True)
-    category = fields.Str(required=True)
+    category = fields.Int(required=True)
     date = fields.Date()
     timestamp = fields.DateTime(dump_only=True)
 
