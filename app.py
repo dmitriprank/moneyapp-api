@@ -10,6 +10,7 @@ import models
 
 from resources.user import bp as UserBlueprint
 from resources.transaction import bp as TransactionBlueprint
+from resources.category import bp as CategoryBlueprint
 
 from blocklist import BLOCKLIST
 
@@ -83,5 +84,6 @@ def create_app(db_url=None):
 
     api.register_blueprint(UserBlueprint)
     api.register_blueprint(TransactionBlueprint)
+    api.register_blueprint(CategoryBlueprint)
 
     return app
