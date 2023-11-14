@@ -14,8 +14,10 @@ bp = Blueprint("transactions", __name__, description="Operations on transactions
 @bp.route("/transactions")
 class UserTransactions(MethodView):
     @jwt_required()
+    @bp.arguments(location='query', as_kwargs=True)
     @bp.response(200, TransactionSchema(many=True))
-    def get(self):
+    def get(self, **kwargs):
+        print(kwargs)
         user_id = get_jwt_identity()
         transactions = TransactionModel.query.filter_by(user_id=user_id)
         return transactions

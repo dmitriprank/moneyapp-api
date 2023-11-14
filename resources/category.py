@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 
 from db import db
-from models import UserCategoryModel
+from models import CategoryModel
 from schemas import UserCategorySchema, PlainUserCategorySchema
 
 bp = Blueprint("categories", __name__, description="Operations on categories")
@@ -17,7 +17,7 @@ class UserCategories(MethodView):
     @bp.response(200, UserCategorySchema(many=True))
     def get(self):
         user_id = get_jwt_identity()
-        categories = UserCategoryModel.query.filter_by(user_id=user_id)
+        categories = CategoryModel.query.filter_by(user_id=user_id)
         return categories
 
     @jwt_required()
@@ -25,7 +25,7 @@ class UserCategories(MethodView):
     @bp.response(201, UserCategorySchema)
     def post(self, category_data):
         user_id = get_jwt_identity()
-        category = UserCategoryModel(**category_data, user_id=user_id)
+        category = CategoryModel(**category_data, user_id=user_id)
         try:
             db.session.add(category)
             db.session.commit()
@@ -39,7 +39,7 @@ class Categories(MethodView):
     @jwt_required()
     @bp.response(200, UserCategorySchema)
     def get(self, category_id):
-        return UserCategoryModel.query.get_or_404(category_id, description="Category not found")
+        return CategoryModel.query.get_or_404(category_id, description="Category not found")
 
     # @jwt_required()
     # @bp.arguments(TransactionUpdateSchema)
@@ -61,7 +61,7 @@ class Categories(MethodView):
     @jwt_required()
     @bp.response(204)
     def delete(self, category_id):
-        transaction = UserCategoryModel.query.get_or_404(category_id)
+        transaction = CategoryModel.query.get_or_404(category_id)
         if not transaction:
             return abort(404, message="Category not found")
         db.session.delete(transaction)
