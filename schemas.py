@@ -28,3 +28,9 @@ class TransactionUpdateSchema(Schema):
     amount = fields.Str()
     category = fields.Str()
     date = fields.Date()
+
+
+class UserCategorySchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str(required=True)
+    user_id = fields.Int(required=True)
