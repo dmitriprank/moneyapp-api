@@ -20,6 +20,5 @@ def create_default_categories(mapper, connection, user):
 
     for category_name in default_categories:
         category = UserCategoryModel(name=category_name, user=user)
-        connection.add(category)
-
-        connection.flush()
+        db.session.add(category)
+    db.session.commit()
