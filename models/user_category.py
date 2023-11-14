@@ -15,6 +15,7 @@ class UserCategoryModel(db.Model):
 
 @listens_for(UserModel, 'after_insert')
 def create_default_categories(mapper, connection, user):
+    type(connection)
     default_categories = ['Category1', 'Category2', 'Category3']
 
     for category_name in default_categories:
