@@ -9,4 +9,4 @@ class UserModel(db.Model):
     password = db.Column(db.String, nullable=False)
 
     transactions = db.relationship("TransactionModel", back_populates="user", lazy="dynamic")
-    categories = db.relationship("UserCategoryModel", back_populates="user", lazy="dynamic")
+    categories = db.relationship("CategoryModel", back_populates="user", lazy="dynamic")
