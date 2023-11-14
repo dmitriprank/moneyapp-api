@@ -1,6 +1,8 @@
 from db import db
 from sqlalchemy.event import listens_for
 from .user import UserModel
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 
 class UserCategoryModel(db.Model):
@@ -18,7 +20,13 @@ def create_default_categories(mapper, connection, user):
     type(connection)
     default_categories = ['Category1', 'Category2', 'Category3']
 
+    session = Session(bind=connection)
+
     for category_name in default_categories:
         category = UserCategoryModel(name=category_name, user=user)
-        db.session.add(category)
-    db.session.commit()
+        session.add(category)
+
+        try:
+            session.flush()
+        except IntegrityError:
+            session.rollback()
