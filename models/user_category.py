@@ -17,16 +17,16 @@ class UserCategoryModel(db.Model):
 
 @listens_for(UserModel, 'after_insert')
 def create_default_categories(mapper, connection, user):
-    type(connection)
     default_categories = ['Category1', 'Category2', 'Category3']
 
+    # Access the session from the connection
     session = Session(bind=connection)
 
     for category_name in default_categories:
         category = UserCategoryModel(name=category_name, user=user)
         session.add(category)
 
-        try:
-            session.flush()
-        except IntegrityError:
-            session.rollback()
+    try:
+        session.flush()
+    except IntegrityError:
+        session.rollback()
