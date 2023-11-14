@@ -48,4 +48,5 @@ class UserCategorySchema(PlainUserCategorySchema):
 
 
 class TransactionQuerySchema(Schema):
-    test = fields.Str()
+    start_date = fields.Date(format='%Y-%m-%d')
+    end_date = fields.Date(format='%Y-%m-%d')
