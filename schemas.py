@@ -20,7 +20,7 @@ class PlainTransactionSchema(Schema):
     type = fields.Str(validate=validate.OneOf(["deposit", "expense"]), by_value=True, required=True)  # TODO: make schema for transaction type
     amount = fields.Str(required=True)
     category = fields.Int(required=True)
-    date = fields.Date()
+    date = fields.Date(default=date.today())
     timestamp = fields.DateTime(dump_only=True)
 
 
