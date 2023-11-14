@@ -19,14 +19,6 @@ class UserCategoryModel(db.Model):
 def create_default_categories(mapper, connection, user):
     default_categories = ['Category1', 'Category2', 'Category3']
 
-    # Access the session from the connection
-    session = Session(bind=connection)
+    category_data = [{'name': category_name, 'user_id': user.id} for category_name in default_categories]
 
-    for category_name in default_categories:
-        category = UserCategoryModel(name=category_name, user=user)
-        session.add(category)
-
-    try:
-        session.flush()
-    except IntegrityError:
-        session.rollback()
+    connection.execute(UserCategoryModel.__table__.insert().values(category_data))
