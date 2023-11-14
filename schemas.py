@@ -29,7 +29,7 @@ class UserSchema(PlainUserSchema):
 
 
 class TransactionSchema(PlainTransactionSchema):
-    user_id = fields.Int(required=True)
+    user_id = fields.Int(data_key='userId', required=True)
 
 
 class TransactionUpdateSchema(Schema):
