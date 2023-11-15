@@ -30,9 +30,9 @@ class UserTransactions(MethodView):
         transaction = TransactionModel(**transaction_data, user_id=user_id)
         try:
             db.session.add(transaction)
-
             db.session.commit()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
+            print(e)
             abort(500, message="Error occurred while creating transaction")
         return transaction
 
