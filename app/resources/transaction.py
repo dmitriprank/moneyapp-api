@@ -21,9 +21,9 @@ class UserTransactions(MethodView):
         transactions = TransactionModel.query.filter_by(user_id=user_id)
         if kwargs:
             if kwargs.get("start_date"):
-                transactions = transactions.filter(TransactionModel.timestamp >= kwargs["start_date"])
+                transactions = transactions.filter(TransactionModel.date >= kwargs["start_date"])
             if kwargs.get("end_date"):
-                transactions = transactions.filter(TransactionModel.timestamp <= kwargs["end_date"])
+                transactions = transactions.filter(TransactionModel.date <= kwargs["end_date"])
         return transactions
 
     @jwt_required()
