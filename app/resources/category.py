@@ -22,7 +22,7 @@ class UserCategories(MethodView):
         print(category_type, type(category_type))
         categories = CategoryModel.query.filter(CategoryModel.user_id == user_id)
         if category_type:
-            categories.filter(CategoryModel.type == category_type.value)
+            categories = categories.filter(CategoryModel.type == category_type.value)
         print(categories)
         return categories
 
