@@ -12,7 +12,7 @@ class TransactionModel(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),  nullable=False)
     type = db.Column(db.Enum("deposit", "expense", name="transaction_type", create_type=True), nullable=False)
     amount = db.Column(db.DECIMAL(12, 2), nullable=False)
-    category = db.Column(db.Integer, db.ForeignKey('category.id'),  nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'),  nullable=False)
     date = db.Column(db.Date, default=datetime.date.today())
     timestamp = db.Column(db.DateTime, server_default=func.now())
 

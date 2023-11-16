@@ -50,3 +50,7 @@ class UserCategorySchema(PlainUserCategorySchema):
 class TransactionQuerySchema(Schema):
     start_date = fields.Date(data_key='startDate', format='%Y-%m-%d')
     end_date = fields.Date(data_key='endDate', format='%Y-%m-%d')
+
+
+class CategoriesQuerySchema(Schema):
+    type = fields.Enum(TransactionType, by_value=True)

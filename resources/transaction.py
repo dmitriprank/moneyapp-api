@@ -2,6 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import and_
 
 
 from db import db
@@ -20,6 +21,11 @@ class UserTransactions(MethodView):
         print(kwargs)
         user_id = get_jwt_identity()
         transactions = TransactionModel.query.filter_by(user_id=user_id)
+        if kwargs:
+            if kwargs.get("start_date"):
+                transactions.filter(TransactionModel.timestamp >= kwargs["start_date"])
+            if kwargs.get("end_date"):
+                transactions.filter(TransactionModel.timestamp <= kwargs["end_date"])
         return transactions
 
     @jwt_required()
