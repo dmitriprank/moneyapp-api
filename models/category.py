@@ -1,12 +1,14 @@
 from db import db
 from sqlalchemy.event import listens_for
 from .user import UserModel
+from .default_category import DefaultCategoryModel
 
 
 class CategoryModel(db.Model):
     __tablename__ = "category"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    type = db.Column(db.Enum("deposit", "expense", name="category_type", create_type=True), nullable=False)
     name = db.Column(db.String(64))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),  nullable=False)
 
@@ -15,8 +17,9 @@ class CategoryModel(db.Model):
 
 @listens_for(UserModel, 'after_insert')
 def create_default_categories(mapper, connection, user):
-    default_categories = ['Category1', 'Category2', 'Category3']
+    default_categories = DefaultCategoryModel.query.all()
 
-    category_data = [{'name': category_name, 'user_id': user.id} for category_name in default_categories]
+    category_data = [{'type': cat.type, 'name': cat.name, 'user_id': user.id}
+                     for cat in default_categories]
 
     connection.execute(CategoryModel.__table__.insert().values(category_data))
