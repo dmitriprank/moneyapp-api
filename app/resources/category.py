@@ -14,10 +14,11 @@ bp = Blueprint("categories", __name__, description="Operations on categories")
 @bp.route("/categories")
 class UserCategories(MethodView):
     @jwt_required()
-    @bp.arguments(CategoriesQuerySchema, location='query')
+    @bp.arguments(CategoriesQuerySchema, location='query', as_kwargs=True)
     @bp.response(200, UserCategorySchema(many=True))
-    def get(self, category_type: TransactionType):
+    def get(self, **kwargs):
         user_id = get_jwt_identity()
+        category_type = kwargs.get("type")
         print(category_type, type(category_type))
         categories = CategoryModel.query.filter_by(user_id=user_id)
         if category_type:
