@@ -1,11 +1,6 @@
 from marshmallow import Schema, fields, validate
-from enum import Enum
 from datetime import date
-
-
-class TransactionType(Enum):
-    DEPOSIT = 'deposit'
-    EXPENSE = 'expense'
+from types import TransactionType
 
 
 class PlainUserSchema(Schema):
