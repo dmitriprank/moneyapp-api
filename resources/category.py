@@ -22,6 +22,7 @@ class UserCategories(MethodView):
         categories = CategoryModel.query.filter_by(user_id=user_id)
         if category_type:
             categories.filter_by(type=category_type)
+            print(categories)
         return categories
 
     @jwt_required()
