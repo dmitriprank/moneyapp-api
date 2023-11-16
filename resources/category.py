@@ -18,6 +18,7 @@ class UserCategories(MethodView):
     @bp.response(200, UserCategorySchema(many=True))
     def get(self, category_type):
         user_id = get_jwt_identity()
+        print(category_type)
         categories = CategoryModel.query.filter_by(user_id=user_id)
         if category_type:
             categories.filter_by(type=category_type)
