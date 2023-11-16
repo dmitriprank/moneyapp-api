@@ -48,4 +48,5 @@ class TransactionQuerySchema(Schema):
 
 
 class CategoriesQuerySchema(Schema):
-    type = fields.Enum(TransactionType, by_value=True)
+    # type = fields.Enum(TransactionType, by_value=True)
+    type = fields.Enum(TransactionType)
