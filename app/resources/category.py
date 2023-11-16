@@ -18,7 +18,7 @@ class UserCategories(MethodView):
     @bp.response(200, UserCategorySchema(many=True))
     def get(self, category_type: TransactionType):
         user_id = get_jwt_identity()
-        print(category_type)
+        print(category_type, type(category_type))
         categories = CategoryModel.query.filter_by(user_id=user_id)
         if category_type:
             categories.filter(CategoryModel.type == category_type.value)
