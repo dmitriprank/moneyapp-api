@@ -12,6 +12,7 @@ default_categories = {
 class DefaultCategoryModel(db.Model):
     __tablename__ = "default_category"
 
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     type = db.Column(db.Enum("deposit", "expense", name="category_type", create_type=True), nullable=False)
     name = db.Column(db.String(64))
 
