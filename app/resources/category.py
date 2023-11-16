@@ -3,9 +3,8 @@ from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import SQLAlchemyError
 
-
 from db import db
-from models import CategoryModel
+from app.models import CategoryModel
 from schemas import UserCategorySchema, PlainUserCategorySchema, CategoriesQuerySchema
 
 bp = Blueprint("categories", __name__, description="Operations on categories")

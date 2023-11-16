@@ -7,7 +7,7 @@ from passlib.hash import pbkdf2_sha256
 
 from db import db
 from blocklist import BLOCKLIST
-from models import UserModel
+from app.models import UserModel
 from schemas import UserSchema, PlainUserSchema
 
 

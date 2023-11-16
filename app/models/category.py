@@ -2,7 +2,7 @@ from db import db
 from sqlalchemy.event import listens_for
 from .user import UserModel
 from .default_category import DefaultCategoryModel
-from types import TransactionType
+from app.types import TransactionType
 
 
 class CategoryModel(db.Model):

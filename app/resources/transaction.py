@@ -2,11 +2,9 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import and_
-
 
 from db import db
-from models import TransactionModel
+from app.models import TransactionModel
 from schemas import TransactionSchema, TransactionUpdateSchema, PlainTransactionSchema, TransactionQuerySchema
 
 bp = Blueprint("transactions", __name__, description="Operations on transactions")

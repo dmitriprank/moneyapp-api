@@ -6,11 +6,10 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 from db import db
-import models
 
-from resources.user import bp as UserBlueprint
-from resources.transaction import bp as TransactionBlueprint
-from resources.category import bp as CategoryBlueprint
+from app.resources.user import bp as UserBlueprint
+from app.resources.transaction import bp as TransactionBlueprint
+from app.resources.category import bp as CategoryBlueprint
 
 from blocklist import BLOCKLIST
 

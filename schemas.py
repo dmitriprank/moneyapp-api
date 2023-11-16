@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, validate
 from datetime import date
-from types import TransactionType
+from app.types import TransactionType
 
 
 class PlainUserSchema(Schema):
