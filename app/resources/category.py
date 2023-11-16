@@ -20,10 +20,10 @@ class UserCategories(MethodView):
         user_id = get_jwt_identity()
         category_type = kwargs.get("type")
         print(category_type, type(category_type))
-        categories = CategoryModel.query.filter_by(user_id=user_id)
+        categories = CategoryModel.query.filter(CategoryModel.user_id == user_id)
         if category_type:
-            categories.filter(CategoryModel.type == category_type.value).all()
-            print(categories)
+            categories.filter(CategoryModel.type == category_type.value)
+        print(categories)
         return categories
 
     @jwt_required()
