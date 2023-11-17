@@ -35,7 +35,7 @@ class TransactionUpdateSchema(Schema):
 
 class PlainCategorySchema(Schema):
     id = fields.Int(dump_only=True)
-    type = fields.Enum(TransactionType, by_value=True, required=True)
+    type = fields.Enum(TransactionType, required=True)
     name = fields.Str(required=True)
 
 
