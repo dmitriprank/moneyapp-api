@@ -16,7 +16,6 @@ class UserTransactions(MethodView):
     @bp.arguments(TransactionQuerySchema, location='query', as_kwargs=True)
     @bp.response(200, TransactionSchema(many=True))
     def get(self, **kwargs):
-        print(kwargs)
         user_id = get_jwt_identity()
         transactions = TransactionModel.query.filter_by(user_id=user_id)
         if kwargs:
@@ -24,6 +23,7 @@ class UserTransactions(MethodView):
                 transactions = transactions.filter(TransactionModel.date >= kwargs["start_date"])
             if kwargs.get("end_date"):
                 transactions = transactions.filter(TransactionModel.date <= kwargs["end_date"])
+        transactions.order_by(TransactionModel.date.desc())
         return transactions
 
     @jwt_required()
