@@ -26,7 +26,7 @@ class User(MethodView):
 
 @bp.route("/register")
 class UserRegister(MethodView):
-    @bp.arguments(PlainUserSchema)
+    @bp.arguments(UserSchema)
     @bp.response(201, UserSchema)
     def post(self, user_data):
         user = UserModel(
@@ -46,7 +46,7 @@ class UserRegister(MethodView):
 
 @bp.route("/signin")
 class UserLogin(MethodView):
-    @bp.arguments(PlainUserSchema)
+    @bp.arguments(UserSchema)
     def post(self, user_data):
         print(user_data, type(user_data))
         user = UserModel.query.filter(
