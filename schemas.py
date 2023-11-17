@@ -49,3 +49,10 @@ class TransactionQuerySchema(Schema):
 
 class CategoriesQuerySchema(Schema):
     type = fields.Enum(TransactionType, by_value=True)
+
+
+class TransactionCreateSchema(Schema):
+    type = fields.Enum(TransactionType, by_value=True, required=True)
+    amount = fields.Str(required=True)
+    category_id = fields.Nested(PlainCategorySchema())
+    date = fields.Date(default=date.today())

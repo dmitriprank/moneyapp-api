@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from app.models import TransactionModel
-from schemas import TransactionSchema, TransactionUpdateSchema, PlainTransactionSchema, TransactionQuerySchema
+from schemas import TransactionSchema, TransactionUpdateSchema, TransactionCreateSchema, TransactionQuerySchema
 
 bp = Blueprint("transactions", __name__, description="Operations on transactions")
 
@@ -27,9 +27,10 @@ class UserTransactions(MethodView):
         return transactions
 
     @jwt_required()
-    @bp.arguments(PlainTransactionSchema)
+    @bp.arguments(TransactionCreateSchema, location='json')
     @bp.response(201, TransactionSchema)
     def post(self, transaction_data):
+        print('Transaction data:', transaction_data)
         user_id = get_jwt_identity()
         transaction = TransactionModel(**transaction_data, user_id=user_id)
         try:
