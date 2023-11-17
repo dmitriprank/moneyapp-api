@@ -17,7 +17,7 @@ class DefaultCategoryModel(db.Model):
     name = db.Column(db.String(64))
 
 
-@event.listens_for(DefaultCategoryModel.__table__, 'after_create')
+@event.listens_for(DefaultCategoryModel.__table__, 'after_configured')
 def insert_default_categories(*args, **kwargs):
     for c_type, c_list in default_categories.items():
         for name in c_list:
