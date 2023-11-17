@@ -1,6 +1,9 @@
 from marshmallow import Schema, fields
+from marshmallow import ValidationError
+
 from datetime import date
 from app.types import TransactionType
+from app.models import CategoryModel
 
 
 class PlainCategorySchema(Schema):
@@ -54,5 +57,10 @@ class CategoriesQuerySchema(Schema):
 class TransactionCreateSchema(Schema):
     type = fields.Enum(TransactionType, by_value=True, required=True)
     amount = fields.Str(required=True)
-    category_id = fields.Nested(PlainCategorySchema())
+    category_id = fields.Integer(required=True)
     date = fields.Date(default=date.today())
+
+    def validate_category_id(self, value):
+        category = CategoryModel.filter_by(id=value).first()
+        if not category:
+            raise ValidationError("Invalid category_id")
