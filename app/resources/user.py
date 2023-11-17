@@ -24,13 +24,6 @@ class User(MethodView):
         return UserModel.query.get_or_404(user_id, description="User not found")
 
 
-@bp.route("/users")
-class Users(MethodView):
-    @bp.response(200, UserSchema(many=True))
-    def get(self):
-        return UserModel.query.all()
-
-
 @bp.route("/register")
 class UserRegister(MethodView):
     @bp.arguments(PlainUserSchema)

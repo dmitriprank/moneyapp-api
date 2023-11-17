@@ -16,7 +16,7 @@ class CategorySchema(PlainCategorySchema):
     user_id = fields.Int(required=True)
 
 
-class PlainUserSchema(Schema):
+class UserSchema(Schema):
     id = fields.Int(dump_only=True)
     email = fields.Str(required=True)
     password = fields.Str(required=True, load_only=True)
@@ -24,7 +24,6 @@ class PlainUserSchema(Schema):
 
 class PlainTransactionSchema(Schema):
     class Meta:
-        # Specify the order of fields
         fields = ("id", "type", "amount", "category_name", "date", "timestamp")
 
     id = fields.Int(dump_only=True)
@@ -42,10 +41,6 @@ class PlainTransactionSchema(Schema):
 
 class TransactionSchema(PlainTransactionSchema):
     user_id = fields.Int(required=True)
-
-
-class UserSchema(PlainUserSchema):
-    transactions = fields.Nested(PlainTransactionSchema(), many=True, dump_only=True)
 
 
 class TransactionUpdateSchema(Schema):
