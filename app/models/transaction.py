@@ -3,6 +3,8 @@ import datetime
 from db import db
 from sqlalchemy import func
 
+from app.types import TransactionType
+
 
 # TODO: add note field for transaction
 class TransactionModel(db.Model):
@@ -10,7 +12,10 @@ class TransactionModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),  nullable=False)
-    type = db.Column(db.Enum("deposit", "expense", name="transaction_type", create_type=True), nullable=False)
+    # type = db.Column(db.Enum("deposit", "expense", name="transaction_type", create_type=True), nullable=False)
+    type = db.Column(db.Enum(TransactionType, name="category_type", create_type=True,
+                             values_callable=lambda x: [str(t.value) for t in TransactionType]),
+                     nullable=False)
     amount = db.Column(db.DECIMAL(12, 2), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'),  nullable=False)
     date = db.Column(db.Date, default=datetime.date.today())
