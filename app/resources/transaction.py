@@ -23,7 +23,7 @@ class UserTransactions(MethodView):
                 transactions = transactions.filter(TransactionModel.date >= kwargs["start_date"])
             if kwargs.get("end_date"):
                 transactions = transactions.filter(TransactionModel.date <= kwargs["end_date"])
-        transactions.order_by(TransactionModel.date.desc())
+        transactions = transactions.order_by(TransactionModel.date.desc())
         return transactions
 
     @jwt_required()
