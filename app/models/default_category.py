@@ -1,5 +1,4 @@
 from db import db
-from sqlalchemy import event
 
 default_categories = {
     "expense": ["Bills", "Car", "Clothes", "Eating out", "Entertainment",
@@ -17,8 +16,7 @@ class DefaultCategoryModel(db.Model):
     name = db.Column(db.String(64))
 
 
-@event.listens_for(DefaultCategoryModel.__table__, 'after_configured')
-def insert_default_categories(*args, **kwargs):
+def insert_default_categories():
     for c_type, c_list in default_categories.items():
         for name in c_list:
             db.session.add(DefaultCategoryModel(type=c_type, name=name))
