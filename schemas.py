@@ -23,20 +23,29 @@ class PlainUserSchema(Schema):
 
 
 class PlainTransactionSchema(Schema):
+    class Meta:
+        # Specify the order of fields
+        fields = ("id", "type", "amount", "category_name", "date", "timestamp")
+
     id = fields.Int(dump_only=True)
     type = fields.Enum(TransactionType, by_value=True, required=True)
     amount = fields.Str(required=True)
-    category_id = fields.Nested(PlainCategorySchema())
+    category_id = fields.Integer(required=True)
     date = fields.Date(default=date.today())
     timestamp = fields.DateTime(dump_only=True)
 
+    category_name = fields.Method("get_category_name", dump_only=True)
 
-class UserSchema(PlainUserSchema):
-    transactions = fields.Nested(PlainTransactionSchema(), many=True, dump_only=True)
+    def get_category_name(self, obj):
+        return CategoryModel.get(obj['category_id']).name
 
 
 class TransactionSchema(PlainTransactionSchema):
     user_id = fields.Int(required=True)
+
+
+class UserSchema(PlainUserSchema):
+    transactions = fields.Nested(PlainTransactionSchema(), many=True, dump_only=True)
 
 
 class TransactionUpdateSchema(Schema):
