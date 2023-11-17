@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from db import db
 from app.models import CategoryModel
 from app.types import TransactionType
-from schemas import CategorySchema, PlainUserCategorySchema, CategoriesQuerySchema
+from schemas import CategorySchema, PlainCategorySchema, CategoriesQuerySchema
 
 bp = Blueprint("categories", __name__, description="Operations on categories")
 
@@ -27,7 +27,7 @@ class UserCategories(MethodView):
         return categories
 
     @jwt_required()
-    @bp.arguments(PlainUserCategorySchema)
+    @bp.arguments(PlainCategorySchema)
     @bp.response(201, CategorySchema)
     def post(self, category_data):
         user_id = get_jwt_identity()

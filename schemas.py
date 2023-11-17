@@ -33,13 +33,13 @@ class TransactionUpdateSchema(Schema):
     date = fields.Date()
 
 
-class PlainUserCategorySchema(Schema):
+class PlainCategorySchema(Schema):
     id = fields.Int(dump_only=True)
-    type = fields.Enum(TransactionType, by_value=True)
+    type = fields.Enum(TransactionType, required=True)
     name = fields.Str(required=True)
 
 
-class CategorySchema(PlainUserCategorySchema):
+class CategorySchema(PlainCategorySchema):
     user_id = fields.Int(required=True)
 
 
