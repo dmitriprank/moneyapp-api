@@ -8,7 +8,7 @@ from passlib.hash import pbkdf2_sha256
 from db import db
 from blocklist import BLOCKLIST
 from app.models import UserModel
-from schemas import UserSchema, PlainUserSchema
+from schemas import UserSchema
 
 
 bp = Blueprint("users", __name__, description="Operations on users")
@@ -17,7 +17,7 @@ bp = Blueprint("users", __name__, description="Operations on users")
 @bp.route("/me")
 class User(MethodView):
     @jwt_required()
-    @bp.response(200, PlainUserSchema)
+    @bp.response(200, UserSchema)
     def get(self):
         user_id = get_jwt_identity()
         print(user_id)
