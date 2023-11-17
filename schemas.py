@@ -37,7 +37,7 @@ class PlainTransactionSchema(Schema):
     category_name = fields.Method("get_category_name", dump_only=True)
 
     def get_category_name(self, obj):
-        return CategoryModel.get(obj['category_id']).name
+        return CategoryModel.query.get(obj['category_id']).name
 
 
 class TransactionSchema(PlainTransactionSchema):
