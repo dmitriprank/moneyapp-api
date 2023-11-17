@@ -14,7 +14,7 @@ bp = Blueprint("categories", __name__, description="Operations on categories")
 @bp.route("/categories")
 class UserCategories(MethodView):
     @jwt_required()
-    @bp.arguments(@, location='query', as_kwargs=True)
+    @bp.arguments(CategoriesQuerySchema, location='query', as_kwargs=True)
     @bp.response(200, CategorySchema(many=True))
     def get(self, **kwargs):
         user_id = get_jwt_identity()
