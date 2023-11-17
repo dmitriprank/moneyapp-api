@@ -3,6 +3,16 @@ from datetime import date
 from app.types import TransactionType
 
 
+class PlainCategorySchema(Schema):
+    id = fields.Int(dump_only=True)
+    type = fields.Enum(TransactionType, by_value=True, required=True)
+    name = fields.Str(required=True)
+
+
+class CategorySchema(PlainCategorySchema):
+    user_id = fields.Int(required=True)
+
+
 class PlainUserSchema(Schema):
     id = fields.Int(dump_only=True)
     email = fields.Str(required=True)
@@ -11,10 +21,9 @@ class PlainUserSchema(Schema):
 
 class PlainTransactionSchema(Schema):
     id = fields.Int(dump_only=True)
-    type = fields.Enum(TransactionType, by_value=True, required=True)  # TODO: make schema for transaction type
-    # type = fields.Str(validate=validate.OneOf(["deposit", "expense"]), by_value=True, required=True)  # TODO: make schema for transaction type
+    type = fields.Enum(TransactionType, by_value=True, required=True)
     amount = fields.Str(required=True)
-    category = fields.Int(required=True)
+    category_id = fields.Nested(PlainCategorySchema())
     date = fields.Date(default=date.today())
     timestamp = fields.DateTime(dump_only=True)
 
@@ -31,16 +40,6 @@ class TransactionUpdateSchema(Schema):
     amount = fields.Str()
     category = fields.Str()
     date = fields.Date()
-
-
-class PlainCategorySchema(Schema):
-    id = fields.Int(dump_only=True)
-    type = fields.Enum(TransactionType, by_value=True, required=True)
-    name = fields.Str(required=True)
-
-
-class CategorySchema(PlainCategorySchema):
-    user_id = fields.Int(required=True)
 
 
 class TransactionQuerySchema(Schema):
