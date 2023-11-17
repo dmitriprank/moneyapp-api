@@ -11,8 +11,8 @@ class PlainUserSchema(Schema):
 
 class PlainTransactionSchema(Schema):
     id = fields.Int(dump_only=True)
-    # type = fields.Enum(TransactionType, by_value=True, required=True)  # TODO: make schema for transaction type
-    type = fields.Str(validate=validate.OneOf(["deposit", "expense"]), by_value=True, required=True)  # TODO: make schema for transaction type
+    type = fields.Enum(TransactionType, by_value=True, required=True)  # TODO: make schema for transaction type
+    # type = fields.Str(validate=validate.OneOf(["deposit", "expense"]), by_value=True, required=True)  # TODO: make schema for transaction type
     amount = fields.Str(required=True)
     category = fields.Int(required=True)
     date = fields.Date(default=date.today())
@@ -35,10 +35,11 @@ class TransactionUpdateSchema(Schema):
 
 class PlainUserCategorySchema(Schema):
     id = fields.Int(dump_only=True)
+    type = fields.Enum(TransactionType, by_value=True)
     name = fields.Str(required=True)
 
 
-class UserCategorySchema(PlainUserCategorySchema):
+class CategorySchema(PlainUserCategorySchema):
     user_id = fields.Int(required=True)
 
 

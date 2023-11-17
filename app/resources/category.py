@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from db import db
 from app.models import CategoryModel
 from app.types import TransactionType
-from schemas import UserCategorySchema, PlainUserCategorySchema, CategoriesQuerySchema
+from schemas import CategorySchema, PlainUserCategorySchema, CategoriesQuerySchema
 
 bp = Blueprint("categories", __name__, description="Operations on categories")
 
@@ -15,7 +15,7 @@ bp = Blueprint("categories", __name__, description="Operations on categories")
 class UserCategories(MethodView):
     @jwt_required()
     @bp.arguments(CategoriesQuerySchema, location='query', as_kwargs=True)
-    @bp.response(200, UserCategorySchema(many=True))
+    @bp.response(200, CategorySchema(many=True))
     def get(self, **kwargs):
         user_id = get_jwt_identity()
         category_type = kwargs.get("type")
@@ -28,7 +28,7 @@ class UserCategories(MethodView):
 
     @jwt_required()
     @bp.arguments(PlainUserCategorySchema)
-    @bp.response(201, UserCategorySchema)
+    @bp.response(201, CategorySchema)
     def post(self, category_data):
         user_id = get_jwt_identity()
         category = CategoryModel(**category_data, user_id=user_id)
@@ -43,7 +43,7 @@ class UserCategories(MethodView):
 @bp.route("/categories/<int:category_id>")
 class Categories(MethodView):
     @jwt_required()
-    @bp.response(200, UserCategorySchema)
+    @bp.response(200, CategorySchema)
     def get(self, category_id):
         return CategoryModel.query.get_or_404(category_id, description="Category not found")
 
