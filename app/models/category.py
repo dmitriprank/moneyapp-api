@@ -9,7 +9,7 @@ class CategoryModel(db.Model):
     __tablename__ = "category"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    type = db.Column(db.Enum(TransactionType, name="category_type", create_type=True,
+    type = db.Column(db.Enum(TransactionType, name="category_type",
                              values_callable=lambda x: [str(t.value) for t in TransactionType]),
                      nullable=False)
     name = db.Column(db.String(64))
