@@ -14,8 +14,9 @@ class DefaultCategoryModel(db.Model):
     __tablename__ = "default_category"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    type = db.Column(db.Enum(TransactionType, name='category_type',
-                             ), nullable=False)
+    type = db.Column(db.Enum(TransactionType, name="category_type",
+                             values_callable=lambda x: [str(t.value) for t in TransactionType]),
+                     nullable=False)
     name = db.Column(db.String(64))
 
 
