@@ -1,5 +1,7 @@
 from db import db
 
+from app.types import TransactionType
+
 default_categories = {
     "expense": ["Bills", "Car", "Clothes", "Eating out", "Entertainment",
                 "Food", "Gifts", "Health", "House", "Pets", "Sports",
@@ -12,7 +14,7 @@ class DefaultCategoryModel(db.Model):
     __tablename__ = "default_category"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    type = db.Column(db.Enum("deposit", "expense", name="category_type", create_type=True), nullable=False)
+    type = db.Column(db.Enum(TransactionType), nullable=False)
     name = db.Column(db.String(64))
 
 
