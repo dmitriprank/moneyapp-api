@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 from db import db
 
@@ -30,8 +31,6 @@ def create_app(db_url=None):
         "DATABASE_URL", "postgresql+psycopg2://moneyapp:jctym2005@localhost:5432/moneyapp_api")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
-
-    api = Api(app)
 
     app.config["JWT_SECRET_KEY"] = "AJA$JP@i7btg9szQK?&m8nznJde5N$X8ykxc64cr"
     jwt = JWTManager(app)
@@ -80,12 +79,12 @@ def create_app(db_url=None):
             401
         )
 
-    with app.app_context():
-        db.create_all()
-        insert_default_categories()
-
+    api = Api(app)
     api.register_blueprint(UserBlueprint)
     api.register_blueprint(TransactionBlueprint)
     api.register_blueprint(CategoryBlueprint)
+
+    migrate = Migrate(app, db)
+    insert_default_categories()
 
     return app
