@@ -16,7 +16,8 @@ down_revision = None
 branch_labels = None
 depends_on = None
 
-enum_type = sa.Enum(TransactionType, name="category_type")
+enum_type = sa.Enum(TransactionType, name="category_type",
+                    values_callable=lambda x: [str(t.value) for t in TransactionType])
 
 
 def upgrade():
