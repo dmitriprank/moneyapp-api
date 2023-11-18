@@ -85,6 +85,6 @@ def create_app(db_url=None):
     api.register_blueprint(CategoryBlueprint)
 
     migrate = Migrate(app, db)
-    insert_default_categories()
+    # insert_default_categories()
 
     return app
