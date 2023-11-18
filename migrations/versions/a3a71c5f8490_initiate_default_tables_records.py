@@ -5,8 +5,8 @@ Revises: 3700130a79d3
 Create Date: 2023-11-18 05:22:57.739476
 
 """
-from alembic import op
-import sqlalchemy as sa
+
+from app.models.default_category import insert_default_categories
 
 
 # revision identifiers, used by Alembic.
@@ -17,7 +17,7 @@ depends_on = None
 
 
 def upgrade():
-    pass
+    insert_default_categories()
 
 
 def downgrade():

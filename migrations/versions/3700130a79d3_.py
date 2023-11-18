@@ -9,8 +9,6 @@ from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql as pg
 
-from app.models.default_category import insert_default_categories
-
 
 # revision identifiers, used by Alembic.
 revision = '3700130a79d3'
@@ -57,7 +55,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    insert_default_categories()
     # ### end Alembic commands ###
 
 
