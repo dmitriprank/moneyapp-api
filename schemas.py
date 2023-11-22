@@ -24,18 +24,16 @@ class UserSchema(Schema):
 
 class PlainTransactionSchema(Schema):
     class Meta:
-        fields = ("id", "type", "amount", "category", "category_id", "category_name", "description", "date", "timestamp")
+        fields = ("id", "type", "amount", "category", "description", "date", "timestamp")
 
     id = fields.Int(dump_only=True)
     type = fields.Enum(TransactionType, by_value=True, required=True)
     amount = fields.Str(required=True)
-    category = fields.Nested(PlainCategorySchema())
-    category_id = fields.Integer(required=True)
+    category = fields.Nested(PlainCategorySchema(), load_only=True)
+    category_id = fields.Integer(required=True, dump_only=True)
     description = fields.String(validate=validate.Length(max=512))
     date = fields.Date(default=date.today())
     timestamp = fields.DateTime(dump_only=True)
-
-    category_name = fields.Method("get_category_name", dump_only=True)
 
     def get_category_name(self, obj):
         return CategoryModel.query.get(obj.category_id).name
