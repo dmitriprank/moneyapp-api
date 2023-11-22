@@ -47,6 +47,7 @@ class TransactionSchema(PlainTransactionSchema):
 class TransactionUpdateSchema(Schema):
     amount = fields.Str()
     category = fields.Str()
+    description = fields.String(validate=validate.Length(max=512))
     date = fields.Date()
 
 

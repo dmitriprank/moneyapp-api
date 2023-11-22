@@ -5,7 +5,6 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from app.models import CategoryModel
-from app.types import TransactionType
 from schemas import CategorySchema, PlainCategorySchema, CategoriesQuerySchema
 
 bp = Blueprint("categories", __name__, description="Operations on categories")
@@ -47,28 +46,28 @@ class Categories(MethodView):
     def get(self, category_id):
         return CategoryModel.query.get_or_404(category_id, description="Category not found")
 
-    # @jwt_required()
-    # @bp.arguments(TransactionUpdateSchema)
-    # @bp.response(200, TransactionSchema)
-    # def put(self, upd_transaction_data, transaction_id):
-    #     transaction = TransactionModel.query.get(transaction_id)
-    #     if not transaction:
-    #         return abort(404, message="Transaction not found")
-    #
-    #     transaction.update(**upd_transaction_data)
-    #     try:
-    #         db.session.add(transaction)
-    #         db.session.commit()
-    #     except SQLAlchemyError:
-    #         abort(500, message="Error occurred while updating transaction")
-    #
-    #     return transaction
+    @jwt_required()
+    @bp.arguments(PlainCategorySchema(partial=True))
+    @bp.response(200, CategorySchema)
+    def patch(self, category_data, category_id):
+        category = CategoryModel.query.get(category_id)
+        if not category_id:
+            return abort(404, message="Category not found")
+
+        category.update(**category_data)
+        try:
+            db.session.add(category)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="Error occurred while updating category")
+
+        return category
 
     @jwt_required()
     @bp.response(204)
     def delete(self, category_id):
-        transaction = CategoryModel.query.get_or_404(category_id)
-        if not transaction:
+        category = CategoryModel.query.get_or_404(category_id)
+        if not category:
             return abort(404, message="Category not found")
-        db.session.delete(transaction)
+        db.session.delete(category)
         db.session.commit()
