@@ -22,6 +22,7 @@ class TransactionModel(db.Model):
     timestamp = db.Column(db.DateTime, server_default=func.now())
 
     user = db.relationship("UserModel", back_populates="transactions", lazy=True)
+    category = db.relationship('CategoryModel', backref="transactions")
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
