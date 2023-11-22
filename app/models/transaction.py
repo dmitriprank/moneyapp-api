@@ -17,6 +17,7 @@ class TransactionModel(db.Model):
                      nullable=False)
     amount = db.Column(db.DECIMAL(12, 2), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'),  nullable=False)
+    description = db.Column(db.String(512))
     date = db.Column(db.Date, default=datetime.date.today())
     timestamp = db.Column(db.DateTime, server_default=func.now())
 
