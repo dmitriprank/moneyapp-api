@@ -50,23 +50,6 @@ class Transaction(MethodView):
         return TransactionModel.query.get_or_404(transaction_id, description="Transaction not found")
 
     @jwt_required()
-    @bp.arguments(TransactionUpdateSchema)
-    @bp.response(200, TransactionSchema)
-    def put(self, upd_transaction_data, transaction_id):
-        transaction = TransactionModel.query.get(transaction_id)
-        if not transaction:
-            return abort(404, message="Transaction not found")
-
-        transaction.update(**upd_transaction_data)
-        try:
-            db.session.add(transaction)
-            db.session.commit()
-        except SQLAlchemyError:
-            abort(500, message="Error occurred while updating transaction")
-
-        return transaction
-
-    @jwt_required()
     @bp.arguments(TransactionUpdateSchema(partial=True))
     @bp.response(200, TransactionSchema)
     def patch(self, upd_transaction_data, transaction_id):
