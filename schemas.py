@@ -24,7 +24,7 @@ class UserSchema(Schema):
 
 class PlainTransactionSchema(Schema):
     class Meta:
-        fields = ("id", "type", "amount", "category_name", "category_name", "description", "date", "timestamp")
+        fields = ("id", "type", "amount", "category_id", "category_name", "description", "date", "timestamp")
 
     id = fields.Int(dump_only=True)
     type = fields.Enum(TransactionType, by_value=True, required=True)
