@@ -30,7 +30,7 @@ class PlainTransactionSchema(Schema):
     type = fields.Enum(TransactionType, by_value=True, required=True)
     amount = fields.Str(required=True)
     category_id = fields.Integer(required=True)
-    description = fields.String(validate=validate.Length(max=50))
+    description = fields.String(validate=validate.Length(max=512))
     date = fields.Date(default=date.today())
     timestamp = fields.DateTime(dump_only=True)
 
@@ -63,6 +63,7 @@ class TransactionCreateSchema(Schema):
     type = fields.Enum(TransactionType, by_value=True, required=True)
     amount = fields.Str(required=True)
     category_id = fields.Integer(required=True)
+    description = fields.String(validate=validate.Length(max=512))
     date = fields.Date(default=date.today())
 
     def validate_category_id(self, value):
