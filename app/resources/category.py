@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from app.models import CategoryModel
-from schemas import CategorySchema, PlainCategorySchema, CategoriesQuerySchema
+from schemas import CategorySchema, PlainCategorySchema, CategoriesQuerySchema, PartialCategorySchema
 
 bp = Blueprint("categories", __name__, description="Operations on categories")
 
@@ -47,7 +47,7 @@ class Categories(MethodView):
         return CategoryModel.query.get_or_404(category_id, description="Category not found")
 
     @jwt_required()
-    @bp.arguments(PlainCategorySchema(partial=True))
+    @bp.arguments(PartialCategorySchema)
     @bp.response(200, CategorySchema)
     def patch(self, category_data, category_id):
         category = CategoryModel.query.get(category_id)
