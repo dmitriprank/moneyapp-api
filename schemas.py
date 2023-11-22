@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validate
 from marshmallow import ValidationError
 
 from datetime import date
@@ -30,6 +30,7 @@ class PlainTransactionSchema(Schema):
     type = fields.Enum(TransactionType, by_value=True, required=True)
     amount = fields.Str(required=True)
     category_id = fields.Integer(required=True)
+    description = fields.String(validate=validate.Length(max=50))
     date = fields.Date(default=date.today())
     timestamp = fields.DateTime(dump_only=True)
 
