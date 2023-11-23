@@ -22,6 +22,9 @@ class RecurrentTransactionSchema(SQLAlchemyAutoSchema):
 
 
 class RecurrentTransactionUpdateSchema(SQLAlchemySchema):
+    class Meta:
+        model = RecurrentTransactionModel
+
     type = auto_field()
     amount = auto_field()
     category_id = auto_field()
