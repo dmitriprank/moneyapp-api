@@ -35,7 +35,7 @@ class PlainTransactionSchema(Schema):
     id = fields.Int(dump_only=True)
     type = fields.Enum(TransactionType, by_value=True, required=True)
     amount = fields.Str(required=True)
-    category = fields.Nested(NestedCategorySchema, dump_only=True)
+    category = fields.Nested(CategoryNestedSchema, dump_only=True)
     category_id = fields.Integer(required=True, load_only=True)
     description = fields.String(validate=validate.Length(max=512))
     date = fields.Date(default=date.today())
