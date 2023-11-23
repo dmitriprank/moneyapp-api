@@ -36,35 +36,35 @@ class UserRecurrentTransactions(MethodView):
         return recurrent_transaction_data
 
 
-# @bp.route("/transactions/<int:transaction_id>")
-# class Transaction(MethodView):
-#     @jwt_required()
-#     @bp.response(200, TransactionSchema)
-#     def get(self, transaction_id):
-#         return TransactionModel.query.get_or_404(transaction_id, description="Transaction not found")
-#
-#     @jwt_required()
-#     @bp.arguments(TransactionUpdateSchema(partial=True))
-#     @bp.response(200, TransactionSchema)
-#     def patch(self, upd_transaction_data, transaction_id):
-#         transaction = TransactionModel.query.get(transaction_id)
-#         if not transaction:
-#             return abort(404, message="Transaction not found")
-#
-#         transaction.update(**upd_transaction_data)
-#         try:
-#             db.session.add(transaction)
-#             db.session.commit()
-#         except SQLAlchemyError:
-#             abort(500, message="Error occurred while updating transaction")
-#
-#         return transaction
-#
-#     @jwt_required()
-#     @bp.response(204)
-#     def delete(self, transaction_id):
-#         transaction = TransactionModel.query.get_or_404(transaction_id)
-#         if not transaction:
-#             return abort(404, message="Transaction not found")
-#         db.session.delete(transaction)
-#         db.session.commit()
+@bp.route("/recurrent_transactions/<int:rt_id>")
+class Transaction(MethodView):
+    @jwt_required()
+    @bp.response(200, RecurrentTransactionSchema)
+    def get(self, rt_id):
+        return RecurrentTransactionModel.query.get_or_404(rt_id, description="Recurrent transaction not found")
+
+    @jwt_required()
+    @bp.arguments(RecurrentTransactionSchema(partial=True), location='json')
+    @bp.response(200, RecurrentTransactionSchema)
+    def patch(self, upd_rt_data, rt_id):
+        recurrent_transaction = RecurrentTransactionModel.query.get(rt_id)
+        if not recurrent_transaction:
+            return abort(404, message="Recurrent transaction not found")
+
+        recurrent_transaction.update(**upd_rt_data)
+        try:
+            db.session.add(recurrent_transaction)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="Error occurred while updating recurrent transaction")
+
+        return recurrent_transaction
+
+    @jwt_required()
+    @bp.response(204)
+    def delete(self, rt_id):
+        recurrent_transaction = RecurrentTransactionModel.query.get_or_404(rt_id)
+        if not recurrent_transaction:
+            return abort(404, message="Recurrent transaction not found")
+        db.session.delete(recurrent_transaction)
+        db.session.commit()
