@@ -1,8 +1,8 @@
-from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field, SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from app.models import RecurrentTransactionModel
 
 
-class RecurrentTransactionSchema(SQLAlchemySchema):
+class RecurrentTransactionSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = RecurrentTransactionModel
 
