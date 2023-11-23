@@ -17,4 +17,5 @@ class RecurrentTransactionSchema(SQLAlchemyAutoSchema):
     category = fields.Nested(CategoryNestedSchema, dump_only=True)
     type = fields.Enum(TransactionType, by_value=True, required=True)
     frequency = fields.Enum(RecurrentFrequency, by_value=True, required=True)
+    next_transaction = auto_field(dump_only=True)
     timestamp = auto_field(dump_only=True)
