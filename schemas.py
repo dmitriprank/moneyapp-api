@@ -17,7 +17,7 @@ class CategoryUpdateSchema(Schema):
     name = fields.Str()
 
 
-class NestedCategorySchema(CategorySchema):
+class CategoryNestedSchema(CategorySchema):
     class Meta:
         exclude = ('type',)
 
