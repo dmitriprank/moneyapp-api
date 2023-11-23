@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from app.models import RecurrentTransactionModel
-from app.schemas.recurrent_transaction import RecurrentTransactionSchema
+from app.schemas.recurrent_transaction import RecurrentTransactionSchema, RecurrentTransactionUpdateSchema
 
 bp = Blueprint("recurrent_transactions", __name__, description="Operations on recurrent_transactions")
 
@@ -44,7 +44,7 @@ class Transaction(MethodView):
         return RecurrentTransactionModel.query.get_or_404(rt_id, description="Recurrent transaction not found")
 
     @jwt_required()
-    @bp.arguments(RecurrentTransactionSchema(partial=True), location='json')
+    @bp.arguments(RecurrentTransactionUpdateSchema, location='json')
     @bp.response(200, RecurrentTransactionSchema)
     def patch(self, upd_rt_data, rt_id):
         recurrent_transaction = RecurrentTransactionModel.query.get(rt_id)

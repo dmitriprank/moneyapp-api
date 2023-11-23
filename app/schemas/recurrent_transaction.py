@@ -1,4 +1,4 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field, SQLAlchemySchema
 from marshmallow import fields
 
 from app.models import RecurrentTransactionModel
@@ -19,3 +19,14 @@ class RecurrentTransactionSchema(SQLAlchemyAutoSchema):
     frequency = fields.Enum(RecurrentFrequency, by_value=True, required=True)
     next_transaction = auto_field(dump_only=True)
     timestamp = auto_field(dump_only=True)
+
+
+class RecurrentTransactionUpdateSchema(SQLAlchemySchema):
+    type = auto_field()
+    amount = auto_field()
+    category_id = auto_field()
+    description = auto_field()
+    frequency = auto_field()
+    start_date = auto_field()
+    end_date = auto_field()
+    next_transaction = auto_field()
