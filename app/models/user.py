@@ -10,3 +10,4 @@ class UserModel(db.Model):
 
     transactions = db.relationship("TransactionModel", back_populates="user", lazy="dynamic")
     categories = db.relationship("CategoryModel", back_populates="user", lazy="dynamic")
+    recurrent_transactions = db.relationship("RecurrentTransactionModel", back_populates="user", lazy="dynamic")
