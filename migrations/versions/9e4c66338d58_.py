@@ -38,7 +38,8 @@ def upgrade():
         batch_op.alter_column('type',
                existing_type=postgresql.ENUM('deposit', 'expense', name='category_type'),
                type_=sa.Enum('deposit', 'expense', name='transaction_type'),
-               existing_nullable=False)
+               existing_nullable=False,
+               server_default='deposit')
 
     # ### end Alembic commands ###
 
@@ -49,7 +50,8 @@ def downgrade():
         batch_op.alter_column('type',
                existing_type=sa.Enum('deposit', 'expense', name='transaction_type'),
                type_=postgresql.ENUM('deposit', 'expense', name='category_type'),
-               existing_nullable=False)
+               existing_nullable=False,
+               server_default='deposit')
 
     op.drop_table('recurrent_transaction')
     # ### end Alembic commands ###
