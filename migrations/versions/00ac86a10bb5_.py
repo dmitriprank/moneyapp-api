@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('type',
-              sa.Enum('deposit', 'expense', name='category_type', create_type=False),
+              existing_type=sa.Enum('deposit', 'expense', name='category_type', create_type=False),
               nullable=False),
     sa.Column('amount', sa.DECIMAL(precision=12, scale=2), nullable=False),
     sa.Column('category_id', sa.Integer(), nullable=False),
