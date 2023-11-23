@@ -10,6 +10,10 @@ from app.types import TransactionType, RecurrentFrequency
 class RecurrentTransactionModel(db.Model):
     __tablename__ = "recurrent_transaction"
 
+    @staticmethod
+    def next_transaction_default(context):
+        return context.get_current_parameters()['start_date']
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),  nullable=False)
     type = db.Column(db.Enum(TransactionType, name="category_type",
@@ -23,7 +27,7 @@ class RecurrentTransactionModel(db.Model):
                           nullable=False)
     start_date = db.Column(db.Date, default=datetime.date.today())
     end_date = db.Column(db.Date, nullable=True)
-    next_transaction = db.Column(db.Date, default=start_date)
+    next_transaction = db.Column(db.Date, default=next_transaction_default)
 
     timestamp = db.Column(db.DateTime, server_default=func.now())
 
