@@ -12,6 +12,11 @@ class CategorySchema(Schema):
     name = fields.Str(required=True)
 
 
+class CategoryUpdateSchema(Schema):
+    type = fields.Enum(TransactionType, by_value=True)
+    name = fields.Str()
+
+
 class NestedCategorySchema(CategorySchema):
     class Meta:
         exclude = ('type',)
