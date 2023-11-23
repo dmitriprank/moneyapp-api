@@ -1,6 +1,6 @@
 from app.resources.transaction import create_transaction
 from app.models import RecurrentTransactionModel
-from db import db
+from app.db import db
 
 import datetime
 from typing import List

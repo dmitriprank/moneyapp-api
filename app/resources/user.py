@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from passlib.hash import pbkdf2_sha256
 
 
-from db import db
+from app.db import db
 from blocklist import BLOCKLIST
 from app.models import UserModel
 from app.schemas.user import UserSchema

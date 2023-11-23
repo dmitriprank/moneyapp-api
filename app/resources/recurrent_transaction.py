@@ -3,7 +3,7 @@ from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import SQLAlchemyError
 
-from db import db
+from app.db import db
 from app.models import RecurrentTransactionModel
 from app.schemas.recurrent_transaction import RecurrentTransactionSchema, RecurrentTransactionUpdateSchema
 

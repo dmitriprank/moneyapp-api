@@ -1,4 +1,4 @@
-from db import db
+from app.db import db
 from sqlalchemy.event import listens_for
 from .user import UserModel
 from .default_category import DefaultCategoryModel

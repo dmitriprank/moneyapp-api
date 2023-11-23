@@ -6,7 +6,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_migrate import Migrate
 
-from db import db
+from app.db import db
 
 from app.resources.user import bp as UserBlueprint
 from app.resources.transaction import bp as TransactionBlueprint

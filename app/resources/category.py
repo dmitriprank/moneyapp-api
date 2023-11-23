@@ -3,7 +3,7 @@ from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import SQLAlchemyError
 
-from db import db
+from app.db import db
 from app.models import CategoryModel
 from app.schemas.category import CategorySchema, CategoryUpdateSchema, CategoriesQuerySchema
 

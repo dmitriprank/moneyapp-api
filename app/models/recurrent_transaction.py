@@ -1,6 +1,6 @@
 import datetime
 
-from db import db
+from app.db import db
 from sqlalchemy import func
 
 from app.types import TransactionType, RecurrentFrequency
