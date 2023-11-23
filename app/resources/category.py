@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from app.models import CategoryModel
-from schemas import CategorySchema, CategoryUpdateSchema, CategoriesQuerySchema
+from app.schemas.category import CategorySchema, CategoryUpdateSchema, CategoriesQuerySchema
 
 bp = Blueprint("categories", __name__, description="Operations on categories")
 

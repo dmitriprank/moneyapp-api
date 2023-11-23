@@ -4,28 +4,7 @@ from marshmallow import ValidationError
 from datetime import date
 from app.types import TransactionType
 from app.models import CategoryModel
-
-
-class CategorySchema(Schema):
-    id = fields.Int(dump_only=True)
-    type = fields.Enum(TransactionType, by_value=True, required=True)
-    name = fields.Str(required=True)
-
-
-class CategoryUpdateSchema(Schema):
-    type = fields.Enum(TransactionType, by_value=True)
-    name = fields.Str()
-
-
-class CategoryNestedSchema(CategorySchema):
-    class Meta:
-        exclude = ('type',)
-
-
-class UserSchema(Schema):
-    id = fields.Int(dump_only=True)
-    email = fields.Str(required=True)
-    password = fields.Str(required=True, load_only=True)
+from app.schemas.category import CategoryNestedSchema
 
 
 class PlainTransactionSchema(Schema):
@@ -59,10 +38,6 @@ class TransactionUpdateSchema(Schema):
 class TransactionQuerySchema(Schema):
     start_date = fields.Date(data_key='startDate', format='%Y-%m-%d')
     end_date = fields.Date(data_key='endDate', format='%Y-%m-%d')
-
-
-class CategoriesQuerySchema(Schema):
-    type = fields.Enum(TransactionType, by_value=True)
 
 
 class TransactionCreateSchema(Schema):

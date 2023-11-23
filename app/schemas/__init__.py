@@ -1,1 +1,0 @@
-from .recurrent_transaction import RecurrentTransactionSchema

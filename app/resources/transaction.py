@@ -5,7 +5,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from app.models import TransactionModel
-from schemas import TransactionSchema, TransactionUpdateSchema, TransactionCreateSchema, TransactionQuerySchema
+from app.schemas.transaction import (TransactionSchema, TransactionUpdateSchema,
+                                     TransactionCreateSchema, TransactionQuerySchema)
 
 bp = Blueprint("transactions", __name__, description="Operations on transactions")
 

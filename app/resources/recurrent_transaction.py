@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from app.models import RecurrentTransactionModel
-from app.schemas import RecurrentTransactionSchema
+from app.schemas.recurrent_transaction import RecurrentTransactionSchema
 
 bp = Blueprint("recurrent_transactions", __name__, description="Operations on recurrent_transactions")
 
