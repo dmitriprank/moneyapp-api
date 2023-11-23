@@ -17,7 +17,7 @@ class UserRecurrentTransactions(MethodView):
     def get(self):
         user_id = get_jwt_identity()
         recurrent_transactions = (RecurrentTransactionModel.query.filter_by(user_id=user_id)
-                                  .order_by(RecurrentTransactionModel.next_transaction.desc()))
+                                  .order_by(RecurrentTransactionModel.next_transaction.asc()))
         return recurrent_transactions
 
     @jwt_required()
