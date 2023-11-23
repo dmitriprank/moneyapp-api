@@ -12,11 +12,6 @@ class CategorySchema(Schema):
     name = fields.Str(required=True)
 
 
-class PartialCategorySchema(CategorySchema):
-    class Meta:
-        partial = True
-
-
 class NestedCategorySchema(CategorySchema):
     class Meta:
         exclude = ('type',)

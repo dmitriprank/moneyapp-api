@@ -47,7 +47,7 @@ class Categories(MethodView):
         return CategoryModel.query.get_or_404(category_id, description="Category not found")
 
     @jwt_required()
-    @bp.arguments(PartialCategorySchema)
+    @bp.arguments(CategorySchema(partial=True), location='json')
     @bp.response(200, CategorySchema)
     def patch(self, category_data, category_id):
         category = CategoryModel.query.get(category_id)
