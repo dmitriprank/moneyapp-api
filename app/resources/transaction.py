@@ -11,6 +11,16 @@ from app.schemas.transaction import (TransactionSchema, TransactionUpdateSchema,
 bp = Blueprint("transactions", __name__, description="Operations on transactions")
 
 
+def create_transaction(transaction_data, user_id):
+    transaction = TransactionModel(**transaction_data, user_id=user_id)
+    try:
+        db.session.add(transaction)
+        db.session.commit()
+    except SQLAlchemyError as e:
+        abort(500, message="Error occurred while creating transaction")
+    return transaction
+
+
 @bp.route("/transactions")
 class UserTransactions(MethodView):
     @jwt_required()
@@ -31,15 +41,8 @@ class UserTransactions(MethodView):
     @bp.arguments(TransactionCreateSchema, location='json')
     @bp.response(201, TransactionSchema)
     def post(self, transaction_data):
-        print('Transaction data:', transaction_data)
         user_id = get_jwt_identity()
-        transaction = TransactionModel(**transaction_data, user_id=user_id)
-        try:
-            db.session.add(transaction)
-            db.session.commit()
-        except SQLAlchemyError as e:
-            print(e)
-            abort(500, message="Error occurred while creating transaction")
+        transaction = create_transaction(transaction_data, user_id)
         return transaction
 
 
