@@ -7,7 +7,7 @@ from app.models import CategoryModel
 from app.schemas.category import CategoryNestedSchema
 
 
-class PlainTransactionSchema(Schema):
+class TransactionSchema(Schema):
     class Meta:
         fields = ("id", "type", "amount", "category", "description", "date", "timestamp")
 
@@ -19,13 +19,6 @@ class PlainTransactionSchema(Schema):
     description = fields.String(validate=validate.Length(max=512))
     date = fields.Date(default=date.today())
     timestamp = fields.DateTime(dump_only=True)
-
-    def get_category_name(self, obj):
-        return CategoryModel.query.get(obj.category_id).name
-
-
-class TransactionSchema(PlainTransactionSchema):
-    user_id = fields.Int(required=True)
 
 
 class TransactionUpdateSchema(Schema):
