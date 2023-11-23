@@ -11,7 +11,7 @@ from db import db
 from app.resources.user import bp as UserBlueprint
 from app.resources.transaction import bp as TransactionBlueprint
 from app.resources.category import bp as CategoryBlueprint
-from app.models.default_category import insert_default_categories
+from app.resources.recurrent_transaction import bp as RecurrentTransactionBlueprint
 
 from blocklist import BLOCKLIST
 
@@ -83,8 +83,8 @@ def create_app(db_url=None):
     api.register_blueprint(UserBlueprint)
     api.register_blueprint(TransactionBlueprint)
     api.register_blueprint(CategoryBlueprint)
+    api.register_blueprint(RecurrentTransactionBlueprint)
 
     migrate = Migrate(app, db)
-    # insert_default_categories()
 
     return app
