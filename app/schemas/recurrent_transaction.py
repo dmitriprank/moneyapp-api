@@ -25,11 +25,11 @@ class RecurrentTransactionUpdateSchema(SQLAlchemySchema):
     class Meta:
         model = RecurrentTransactionModel
 
-    type = auto_field(requiered=False)
-    amount = auto_field(requiered=False)
-    category_id = auto_field(requiered=False)
-    description = auto_field(requiered=False)
-    frequency = auto_field(requiered=False)
-    start_date = auto_field(requiered=False)
-    end_date = auto_field(requiered=False)
-    next_transaction = auto_field(requiered=False)
+    type = auto_field(required=False)
+    amount = auto_field(required=False)
+    category_id = auto_field(required=False)
+    description = auto_field(required=False)
+    frequency = auto_field(required=False)
+    start_date = auto_field(required=False)
+    end_date = auto_field(required=False)
+    next_transaction = auto_field(required=False)
