@@ -12,7 +12,7 @@ class TransactionModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),  nullable=False)
-    type = db.Column(db.Enum(TransactionType, name="transaction_type",
+    type = db.Column(db.Enum(TransactionType, name="category_type",
                              values_callable=lambda x: [str(t.value) for t in TransactionType]),
                      nullable=False)
     amount = db.Column(db.DECIMAL(12, 2), nullable=False)
