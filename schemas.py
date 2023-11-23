@@ -6,24 +6,20 @@ from app.types import TransactionType
 from app.models import CategoryModel
 
 
-class PlainCategorySchema(Schema):
+class CategorySchema(Schema):
     id = fields.Int(dump_only=True)
     type = fields.Enum(TransactionType, by_value=True, required=True)
     name = fields.Str(required=True)
 
 
-class PartialCategorySchema(PlainCategorySchema):
+class PartialCategorySchema(CategorySchema):
     class Meta:
         partial = True
 
 
-class NestedCategorySchema(PlainCategorySchema):
+class NestedCategorySchema(CategorySchema):
     class Meta:
         exclude = ('type',)
-
-
-class CategorySchema(PlainCategorySchema):
-    user_id = fields.Int(required=True)
 
 
 class UserSchema(Schema):
