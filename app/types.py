@@ -7,3 +7,8 @@ class TransactionType(Enum):
 
     def __repr__(self):
         return f"{self.value}"
+
+
+class RecurrentFrequency(Enum):
+    WEEKLY = 'weekly'
+    MONTHLY = 'monthly'
