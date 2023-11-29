@@ -1,5 +1,5 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field, SQLAlchemySchema
-from marshmallow import fields
+from marshmallow import fields, Schema
 
 from app.models import RecurrentTransactionModel
 from app.types import TransactionType, RecurrentFrequency
@@ -33,3 +33,8 @@ class RecurrentTransactionUpdateSchema(SQLAlchemySchema):
     start_date = auto_field(required=False)
     end_date = auto_field(required=False)
     next_transaction = auto_field(required=False)
+
+
+class RecurrentTransactionQuerySchema(Schema):
+    start_date = fields.Date(data_key='startDate', format='%Y-%m-%d')
+    end_date = fields.Date(data_key='endDate', format='%Y-%m-%d')

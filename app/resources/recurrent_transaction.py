@@ -5,7 +5,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.db import db
 from app.models import RecurrentTransactionModel
-from app.schemas.recurrent_transaction import RecurrentTransactionSchema, RecurrentTransactionUpdateSchema
+from app.schemas.recurrent_transaction import (RecurrentTransactionSchema, RecurrentTransactionUpdateSchema,
+                                               RecurrentTransactionQuerySchema)
 
 bp = Blueprint("recurrent_transactions", __name__, description="Operations on recurrent_transactions")
 
@@ -13,12 +14,20 @@ bp = Blueprint("recurrent_transactions", __name__, description="Operations on re
 @bp.route("/recurrent_transactions")
 class UserRecurrentTransactions(MethodView):
     @jwt_required()
+    @bp.arguments(RecurrentTransactionQuerySchema, location='query', as_kwargs=True)
     @bp.response(200, RecurrentTransactionSchema(many=True))
-    def get(self):
+    def get(self, **kwargs):
         user_id = get_jwt_identity()
-        recurrent_transactions = (RecurrentTransactionModel.query.filter_by(user_id=user_id)
-                                  .order_by(RecurrentTransactionModel.next_transaction.asc()))
-        return recurrent_transactions
+        rc_transactions = (RecurrentTransactionModel.query.filter_by(user_id=user_id))
+        if kwargs:
+            if kwargs.get("start_date"):
+                rc_transactions = rc_transactions.filter(
+                    RecurrentTransactionModel.next_transaction >= kwargs["start_date"])
+            if kwargs.get("end_date"):
+                rc_transactions = rc_transactions.filter(
+                    RecurrentTransactionModel.next_transaction <= kwargs["end_date"])
+        rc_transactions = rc_transactions.order_by(RecurrentTransactionModel.next_transaction.asc())
+        return rc_transactions
 
     @jwt_required()
     @bp.arguments(RecurrentTransactionSchema, location='json')
